@@ -36,7 +36,7 @@ class PetCategories:
             result = res.text
         return status, result
 
-    def add_new_pet(self, limit: json, name: str, category: str) -> json:
+    def add_new_category(self, limit: json, name: str, category: str) -> json:
         data = MultipartEncoder(
             fields={
                 'name': name,
@@ -89,7 +89,7 @@ class PetCategories:
             result = res.text
         return status, result
 
-    def delete_pet(self, auth_key: json, pet_id: str) -> json:
+    def delete_category(self, auth_key: json, pet_id: str) -> json:
         headers = {'auth_key': auth_key['key']}
 
         res = requests.delete(self.base_url + 'api/pets/' + pet_id, headers=headers)
@@ -116,3 +116,55 @@ class PetCategories:
         except json.decoder.JSONDecodeError:
             result = res.text
         return status, result
+
+    def add_new_pet(self, auth_key: json, name: str, category: str, pet_photo: str, status: str) -> json:
+
+        data = MultipartEncoder(
+        fields={
+            'name': name,
+            'category': category,
+            'pet_photo': (pet_photo, open(pet_photo, 'rb'), 'image/jpeg')
+            })
+    headers = {'auth_key': auth_key['key'], 'Content-Type': data.content_type}
+
+    res = requests.post(self.base_url + 'api/pets', headers=headers, data=data)
+    status = res.status_code
+    result = ""
+    try:
+        result = res.json()
+    except json.decoder.JSONDecodeError:
+        result = res.text
+    print(result)
+    return status, result
+
+    def update_pet_info(self, auth_key: json, pet_id: str, name: str) -> json:
+
+    headers = {'auth_key': auth_key['key']}
+            data = {
+                'name': name,
+            '   pet_id': id,
+
+                }
+
+        res = requests.put(self.base_url + 'api/pet/' + pet_id, headers=headers, data=data)
+        status = res.status_code
+        result = ""
+        try:
+            result = res.json()
+        except json.decoder.JSONDecodeError:
+            result = res.text
+        return status, result
+
+
+    def delete_pet(self, auth_key: json, pet_id: str) -> json:
+
+    headers = {'auth_key': auth_key['key']}
+
+    res = requests.delete(self.base_url + 'api/pet/' + pet_id, headers=headers)
+    status = res.status_code
+    result = ""
+    try:
+        result = res.json()
+    except json.decoder.JSONDecodeError:
+        result = res.text
+    return status, result

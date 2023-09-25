@@ -114,3 +114,12 @@ def test_add_photo_at_pet(name='Барсик', pet_photo='images/20.jpeg'):
     assert status == 200
     assert result['pet_photo'] != pet_photo
 
+def test_add_new_pet_with_no_data(name='', animal_type='', age=''):
+
+    _, auth_key = pc.get_api_key(valid_username, valid_password)
+
+    status, result = pc.add_new_pet_simple(auth_key, name, animal_type, age)
+
+    assert status == 200
+    assert result['name'] == ''
+    assert result['pet_photo'] == ''
