@@ -1,9 +1,23 @@
-from api import PetCategories
+from api import PetCategory
 from settings import valid_username, valid_password
 import os
 
-pc = PetCategories()
+pc = PetCategory()
 
+def test_add_pet_to_category(self):
+        category = PetCategory("Cats")
+        pet = "Fluffy"
+        category.add_pet(pet)
+        self.assertEqual(len(category.pets), 1)
+        self.assertIn(pet, category.pets)
+
+def test_remove_pet_from_category(self):
+        category = PetCategory("Birds")
+        pet = "Polly"
+        category.add_pet(pet)
+        category.remove_pet(pet)
+        self.assertEqual(len(category.pets), 0)
+        self.assertNotIn(pet, category.pets)
 
 def test_get_api_key_for_valid_user(email=valid_username, password=valid_password):
     status, result = pc.get_api_key(email, password)
